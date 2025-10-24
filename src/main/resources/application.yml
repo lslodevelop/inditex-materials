@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/assetsdb
+    username: postgres
+    password: postgres
+  liquibase:
+    change-log: classpath:database/changelog.xml
+
+logging:
+  level:
+    root: INFO
+    com.example.assetservice: DEBUG
