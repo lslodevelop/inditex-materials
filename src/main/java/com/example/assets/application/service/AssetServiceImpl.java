@@ -4,7 +4,7 @@ import com.example.assets.domain.model.Asset;
 import com.example.assets.domain.model.AssetStatus;
 import com.example.assets.domain.port.in.UploadAssetUseCase;
 import com.example.assets.domain.port.out.AssetRepositoryPort;
-import com.example.assets.domain.port.out.PublisherPort;
+import com.example.assets.domain.port.out.StorageClientPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class AssetServiceImpl implements UploadAssetUseCase {
 
     private final AssetRepositoryPort repository;
-    private final PublisherPort publisher;
+    private final StorageClientPort publisher;
 
     @Override
     public Mono<String> upload(final Asset asset, final String encodedFile) {
