@@ -31,15 +31,12 @@ public class AssetServiceImpl implements UploadAssetUseCase {
                 .build();
 
         return repository.save(toSave)
-                .flatMap(saved -> {
-                    // Ejecutar publish en background (mockable)
-                    publisher.publish(saved, encodedFile)
-                        .flatMap(v -> repository.updateStatus(saved.getId(), null))
-                        .onErrorResume(err -> repository.updateStatus(saved.getId(), err.getMessage()))
-                        .subscribe();
-
-                    return Mono.just(saved.getId());
-                });
+                .flatMap(saved ->
+                        publisher.publish(saved, encodedFile)
+                                .then(repository.updateStatus(saved.getId(), null))
+                                .onErrorResume(err -> repository.updateStatus(saved.getId(), err.getMessage()))
+                                .thenReturn(saved.getId())
+                );
     }
 
     @Override

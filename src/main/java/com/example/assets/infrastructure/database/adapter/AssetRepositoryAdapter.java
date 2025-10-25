@@ -22,7 +22,7 @@ public class AssetRepositoryAdapter implements AssetRepositoryPort {
 
     @Override
     public Mono<Asset> save(final Asset asset) {
-        AssetEntity entity = mapper.toEntity(asset);
+        final AssetEntity entity = mapper.toEntity(asset);
         entity.setCreatedAt(Instant.now());
         entity.setStatus(asset.getStatus() != null ? asset.getStatus().name() : null);
         entity.setNewAsset(true);
@@ -47,9 +47,10 @@ public class AssetRepositoryAdapter implements AssetRepositoryPort {
 
     @Override
     public Mono<Void> updateStatus(final String id, final String errorMessage) {
-        return repo.findById(String.valueOf(id))
+        return repo.findById(id)
                 .flatMap(entity -> {
-                    entity.setStatus(errorMessage == null ? AssetStatus.PUBLISHED.name() : AssetStatus.FAILED.name());
+                    entity.setStatus(errorMessage == null
+                            ? AssetStatus.PUBLISHED.name() : AssetStatus.FAILED.name());
                     entity.setUpdatedAt(Instant.now());
                     return repo.save(entity);
                 })

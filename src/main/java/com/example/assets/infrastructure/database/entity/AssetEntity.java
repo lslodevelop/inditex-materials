@@ -21,7 +21,6 @@ public class AssetEntity implements Persistable<UUID> {
     private String status;
     private Instant createdAt;
     private Instant updatedAt;
-    private String errorMessage;
 
     @Transient
     private boolean newAsset;

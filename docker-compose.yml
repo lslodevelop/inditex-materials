@@ -16,6 +16,15 @@ services:
       timeout: 5s
       retries: 10
 
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+
   minio:
     image: minio/minio:latest
     container_name: minio

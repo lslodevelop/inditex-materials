@@ -8,8 +8,9 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class PublisherAdapter implements PublisherPort {
-    @Override
+public class PublisherAdapter {
+//public class PublisherAdapter implements PublisherPort {
+    //@Override
     public Mono<Void> publish(Asset asset, String encodedFile) {
         log.info("[MOCK PUBLISHER] assetId={} filename={}", asset.getId(), asset.getFilename());
         // Simular proceso asíncrono:
