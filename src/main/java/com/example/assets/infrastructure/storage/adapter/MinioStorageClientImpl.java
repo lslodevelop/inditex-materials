@@ -8,6 +8,7 @@ import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -19,6 +20,7 @@ import java.util.Base64;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Profile("prod")
 public class MinioStorageClientImpl implements StorageClientPort {
 
     private final MinioClient minioClient;
@@ -26,7 +28,7 @@ public class MinioStorageClientImpl implements StorageClientPort {
     private final MinioStorageExceptionHandling minioStorageExceptionHandling;
 
     @Override
-    public Mono<Void> publish(final Asset asset, final String encodedFile) {
+    public Mono<Void> upload(final Asset asset, final String encodedFile) {
         return Mono.fromCallable(() -> {
             final String bucket = storageProperties.getBucket();
             byte[] fileBytes = Base64.getDecoder().decode(encodedFile);
@@ -42,7 +44,7 @@ public class MinioStorageClientImpl implements StorageClientPort {
                 );
             }
 
-            log.info("✅ Asset {} uploaded successfully to MinIO", asset.getId());
+            log.info("Asset {} uploaded successfully to MinIO", asset.getId());
             return (Void) null;
             })
             .subscribeOn(Schedulers.boundedElastic()) //execute in non-blocking thread

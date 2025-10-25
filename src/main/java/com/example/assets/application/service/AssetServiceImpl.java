@@ -32,7 +32,7 @@ public class AssetServiceImpl implements UploadAssetUseCase {
 
         return repository.save(toSave)
                 .flatMap(saved ->
-                        publisher.publish(saved, encodedFile)
+                        publisher.upload(saved, encodedFile)
                                 .then(repository.updateStatus(saved.getId(), null))
                                 .onErrorResume(err -> repository.updateStatus(saved.getId(), err.getMessage()))
                                 .thenReturn(saved.getId())

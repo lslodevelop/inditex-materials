@@ -3,13 +3,22 @@ server:
 
 spring:
   profiles:
-    active: local
+    active: prod
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/assetsdb
     username: postgres
     password: postgres
   liquibase:
     change-log: classpath:database/changelog.xml
+
+storage:
+  type: minio
+  minio:
+    endpoint: http://localhost:9000
+    access-key: minioadmin
+    secret-key: minioadmin
+    bucket: assets
+    secure: false
 
 logging:
   level:

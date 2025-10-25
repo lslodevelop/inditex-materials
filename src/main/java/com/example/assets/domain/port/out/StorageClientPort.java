@@ -4,5 +4,7 @@ import com.example.assets.domain.model.Asset;
 import reactor.core.publisher.Mono;
 
 public interface StorageClientPort {
-    Mono<Void> publish(Asset asset, String encodedFile);
+
+    Mono<Void> upload(Asset asset, String encodedFile);
+
 }
