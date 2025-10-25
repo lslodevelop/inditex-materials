@@ -17,9 +17,6 @@ public record ErrorResponseDto(
         @Schema(description = "Error message")
         String message,
 
-        @Schema(description = "Trace ID for tracking purposes")
-        String traceId,
-
         @Schema(description = "Bean validation errors")
         List<ValidationError> errors,
 
