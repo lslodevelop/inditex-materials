@@ -19,7 +19,7 @@ public class AssetController {
     private final AssetInputAdapter assetInputAdapter;
 
     @PostMapping(value = "/actions/upload", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<AssetResponseDto>> upload(@Validated @RequestBody AssetRequestDto request) {
+    public Mono<ResponseEntity<AssetResponseDto>> upload(@Validated @RequestBody final AssetRequestDto request) {
         return assetInputAdapter.upload(request)
                 .map(dto -> ResponseEntity.accepted().body(dto));
     }

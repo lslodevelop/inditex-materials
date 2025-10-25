@@ -22,7 +22,7 @@ public class AssetServiceImpl implements UploadAssetUseCase {
 
     @Override
     public Mono<String> upload(final Asset asset, final String encodedFile) {
-        Asset toSave = Asset.builder()
+        final Asset toSave = Asset.builder()
                 .id(UUID.randomUUID().toString())
                 .filename(asset.getFilename())
                 .contentType(asset.getContentType())
@@ -43,7 +43,7 @@ public class AssetServiceImpl implements UploadAssetUseCase {
     }
 
     @Override
-    public Flux<Asset> search(String filename, String contentType) {
+    public Flux<Asset> search(final String filename, final String contentType) {
         return repository.findByFilter(filename, contentType);
     }
 }

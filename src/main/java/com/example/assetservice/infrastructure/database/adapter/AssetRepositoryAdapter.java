@@ -21,7 +21,7 @@ public class AssetRepositoryAdapter implements AssetRepositoryPort {
     private final AssetEntityMapper mapper;
 
     @Override
-    public Mono<Asset> save(Asset asset) {
+    public Mono<Asset> save(final Asset asset) {
         AssetEntity entity = mapper.toEntity(asset);
         entity.setCreatedAt(Instant.now());
         entity.setStatus(asset.getStatus() != null ? asset.getStatus().name() : null);
@@ -30,12 +30,12 @@ public class AssetRepositoryAdapter implements AssetRepositoryPort {
     }
 
     @Override
-    public Mono<Asset> findById(String id) {
+    public Mono<Asset> findById(final String id) {
         return repo.findById(id).map(mapper::toDomain);
     }
 
     @Override
-    public Flux<Asset> findByFilter(String filename, String contentType) {
+    public Flux<Asset> findByFilter(final String filename, final String contentType) {
         if (filename != null && !filename.isBlank()) {
             return repo.findByFilenameContainingIgnoreCase(filename).map(mapper::toDomain);
         }
@@ -46,7 +46,7 @@ public class AssetRepositoryAdapter implements AssetRepositoryPort {
     }
 
     @Override
-    public Mono<Void> updateStatus(String id, String url, Long size, String errorMessage) {
+    public Mono<Void> updateStatus(final String id, final String url, final Long size, final String errorMessage) {
         return repo.findById(String.valueOf(id))
                 .flatMap(entity -> {
                     entity.setStatus(errorMessage == null ? AssetStatus.PUBLISHED.name() : AssetStatus.FAILED.name());

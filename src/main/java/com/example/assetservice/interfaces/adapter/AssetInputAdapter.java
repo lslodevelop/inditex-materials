@@ -20,14 +20,7 @@ public class AssetInputAdapter {
     public Mono<AssetResponseDto> upload(final AssetRequestDto dto) {
         final Asset domain = apiAssetMapper.toDomain(dto);
         return uploadUseCase.upload(domain, dto.getEncodedFile())
-                .map(id -> {
-                    AssetResponseDto resp = new AssetResponseDto();
-                    resp.setId(id);
-                    resp.setFilename(domain.getFilename());
-                    resp.setContentType(domain.getContentType());
-                    resp.setStatus(domain.getStatus() != null ? domain.getStatus().name() : null);
-                    return resp;
-                });
+                .map(id -> AssetResponseDto.builder().id(id).build());
     }
 
     public Flux<AssetResponseDto> search(final String filename, final String contentType) {
