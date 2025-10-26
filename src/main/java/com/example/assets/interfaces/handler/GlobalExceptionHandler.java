@@ -30,7 +30,7 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    //Check if possible to manage in interface layer instead of domain layer
+    //Check whether possible to manage in interface layer instead of domain layer
     private final HttpErrorStatusResolver httpErrorStatusResolver;
 
     @ExceptionHandler(ControlledErrorException.class)
@@ -55,8 +55,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoResourceFoundException.class)
-    public Mono<ErrorResponseDto> handleNoResourceFoundException(final NoResourceFoundException ex,
-                                                                 final ServerHttpRequest request) {
+    public Mono<ErrorResponseDto> handleNoResourceFoundException(final ServerHttpRequest request) {
         final String message = format("Invalid endpoint path: %s. Review the path", request.getPath());
         log.warn(message);
         return Mono.just(new ErrorResponseDto(ApplicationErrorCodes.WRONG_PATH.getCode(),
@@ -67,12 +66,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WebExchangeBindException.class)
     public Mono<ErrorResponseDto> handleBeanValidationException(final WebExchangeBindException ex) {
 
-        // Construimos la lista de errores de campo
+        // Build error fields list
         final List<ValidationError> fieldErrors = ex.getFieldErrors().stream()
                 .map(err -> new ValidationError(err.getField(), err.getDefaultMessage()))
                 .toList();
 
-        // Mensaje general resumido
+        // General message shortened
         final String message = "Malformed body. Validation failed for " + fieldErrors.size() + " field(s).";
 
         log.warn("Invalid request. Validation failed: {}", fieldErrors);

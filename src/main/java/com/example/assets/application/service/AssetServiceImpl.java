@@ -6,6 +6,7 @@ import com.example.assets.domain.port.in.UploadAssetUseCase;
 import com.example.assets.domain.port.out.AssetRepositoryPort;
 import com.example.assets.domain.port.out.StorageClientPort;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,12 +14,13 @@ import reactor.core.publisher.Mono;
 import java.time.Instant;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AssetServiceImpl implements UploadAssetUseCase {
 
-    private final AssetRepositoryPort repository;
-    private final StorageClientPort publisher;
+    private final AssetRepositoryPort assetRepositoryPort;
+    private final StorageClientPort storageClientPort;
 
     @Override
     public Mono<String> upload(final Asset asset, final String encodedFile) {
@@ -30,17 +32,37 @@ public class AssetServiceImpl implements UploadAssetUseCase {
                 .status(AssetStatus.PENDING)
                 .build();
 
-        return repository.save(toSave)
+        return assetRepositoryPort.save(toSave)
                 .flatMap(saved ->
-                        publisher.upload(saved, encodedFile)
-                                .then(repository.updateStatus(saved.getId(), null))
-                                .onErrorResume(err -> repository.updateStatus(saved.getId(), err.getMessage()))
+                        storageClientPort.upload(saved, encodedFile)
+                                .flatMap(metadata -> assetRepositoryPort.updateMetadataAndStatus(
+                                        saved.getId(),
+                                        metadata.getUrl(),
+                                        metadata.getSize(),
+                                        metadata.getUploadedAt(),
+                                        null))
+                                .onErrorResume(err -> assetRepositoryPort.updateMetadataAndStatus(
+                                        saved.getId(),
+                                        null,
+                                        0L,
+                                        null,
+                                        err.getMessage()))
                                 .thenReturn(saved.getId())
                 );
     }
 
     @Override
-    public Flux<Asset> search(final String filename, final String contentType) {
-        return repository.findByFilter(filename, contentType);
-    }
+    public Flux<Asset> search(final String filename, final String contentType, final String sortBy, final String sortDirection) {
+        return assetRepositoryPort.findByFilter(filename, contentType, sortBy, sortDirection)
+                .flatMap(asset -> storageClientPort.getFile(asset.getFilename())
+                        .map(encoded -> {
+                            asset.setEncodedFile(encoded);
+                            return asset;
+                        })
+                        .onErrorResume(e -> {
+                            log.warn("File could not be retrieved {}: {}", asset.getFilename(), e.getMessage());
+                            return Mono.just(asset);
+                        })
+                );
+        }
 }

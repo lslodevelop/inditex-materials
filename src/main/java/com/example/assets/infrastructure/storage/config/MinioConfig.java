@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @RequiredArgsConstructor
-@Profile("prod")
+@Profile("minio")
 public class MinioConfig {
 
     private final StorageProperties properties;

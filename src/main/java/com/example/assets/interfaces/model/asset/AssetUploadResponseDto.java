@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class AssetResponseDto {
+public class AssetUploadResponseDto {
 
     private String id;
 

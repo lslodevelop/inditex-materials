@@ -18,9 +18,12 @@ public class AssetEntity implements Persistable<UUID> {
 
     private String filename;
     private String contentType;
+    private String url;
+    private Long size;
     private String status;
     private Instant createdAt;
     private Instant updatedAt;
+    private Instant uploadedAt;
 
     @Transient
     private boolean newAsset;

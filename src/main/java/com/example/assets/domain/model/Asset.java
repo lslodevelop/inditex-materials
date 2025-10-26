@@ -10,8 +10,12 @@ import java.time.Instant;
 public class Asset {
     private String id;
     private String filename;
+    private String encodedFile;
     private String contentType;
+    private String url;
+    private Long size;
     private AssetStatus status;
     private Instant createdAt;
     private Instant updatedAt;
+    private Instant uploadedAt;
 }

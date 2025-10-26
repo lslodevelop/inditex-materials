@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class AssetRequestDto {
+public class AssetUploadRequestDto {
 
     @NotBlank
     private String filename;
