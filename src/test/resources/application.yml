@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: asset-service-test
+
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/testdb
+    username: test
+    password: test
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: test
+    password: test
+
+  liquibase:
+    enabled: true
+    change-log: classpath:database/changelog.xml
