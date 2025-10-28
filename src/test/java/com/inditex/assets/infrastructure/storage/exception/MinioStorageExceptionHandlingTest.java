@@ -23,7 +23,7 @@ class MinioStorageExceptionHandlingTest {
     private MinioStorageExceptionHandling minioStorageExceptionHandling;
 
     @Test
-    void should_map_ErrorResponseException_NoSuchBucket_to_NOT_FOUND() {
+    void mapToStorageErrorResponseExceptionNotFoundTest() {
         //given
         final ErrorResponse errorResponse = mock(ErrorResponse.class);
         when(errorResponse.code()).thenReturn("NoSuchBucket");
@@ -41,7 +41,7 @@ class MinioStorageExceptionHandlingTest {
     }
 
     @Test
-    void should_map_ErrorResponseException_default_to_BAD_GATEWAY() {
+    void mapToStorageErrorResponseExceptionBadGatewayTest() {
         //given
         final ErrorResponse errorResponse = mock(ErrorResponse.class);
         when(errorResponse.code()).thenReturn("SomethingElse");
@@ -59,7 +59,7 @@ class MinioStorageExceptionHandlingTest {
     }
 
     @Test
-    void should_map_ServerException_to_BAD_GATEWAY() {
+    void mapServerExceptionBadGatewayTest() {
         //given
         final ServerException serverException = new ServerException("Server crashed", 1, "message");
 
@@ -72,7 +72,7 @@ class MinioStorageExceptionHandlingTest {
     }
 
     @Test
-    void should_map_InternalException_to_BAD_GATEWAY() {
+    void mapInternalExceptionBadGatewayTest() {
         //given
         final InternalException internalException = new InternalException("Internal error", "httpTrace");
 
@@ -85,7 +85,7 @@ class MinioStorageExceptionHandlingTest {
     }
 
     @Test
-    void should_map_IOException_to_BAD_GATEWAY() {
+    void mapIOExceptionBadGatewayTest() {
         //given
         final IOException ex = new IOException("Network error");
 
@@ -98,7 +98,7 @@ class MinioStorageExceptionHandlingTest {
     }
 
     @Test
-    void should_map_IllegalArgumentException_to_BAD_REQUEST() {
+    void mapIllegalArgumentExceptionBadRequestTest() {
         //given
         final IllegalArgumentException illegalArgumentException = new IllegalArgumentException("Invalid Base64");
 
@@ -110,7 +110,7 @@ class MinioStorageExceptionHandlingTest {
     }
 
     @Test
-    void should_map_unexpected_exception_to_INTERNAL_SERVER_ERROR() {
+    void mapUnexpectedExceptionInternalServerErrorTest() {
         //given
         final RuntimeException runtimeException = new RuntimeException("Unexpected error");
 

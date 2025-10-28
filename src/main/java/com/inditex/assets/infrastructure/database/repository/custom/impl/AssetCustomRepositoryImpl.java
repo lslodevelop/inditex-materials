@@ -36,11 +36,11 @@ public class AssetCustomRepositoryImpl implements AssetCustomRepository {
         Query query = Query.query(criteria);
 
         // Sort field validation
-        String sortField = (sortBy != null && ALLOWED_SORT_FIELDS.contains(sortBy))
+        final String sortField = (ALLOWED_SORT_FIELDS.contains(sortBy))
                 ? sortBy
                 : "created_at";
 
-        Sort.Direction direction = "DESC".equalsIgnoreCase(sortDirection)
+        final Sort.Direction direction = "DESC".equalsIgnoreCase(sortDirection)
                 ? Sort.Direction.DESC
                 : Sort.Direction.ASC;
 
