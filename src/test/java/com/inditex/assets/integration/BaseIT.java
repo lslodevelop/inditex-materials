@@ -26,7 +26,7 @@ import static org.mockito.Mockito.doReturn;
 @ExtendWith(SpringExtension.class)
 @Testcontainers
 @ActiveProfiles("test")
-public abstract class BaseIntegrationTest {
+public abstract class BaseIT {
 
     @Container
     protected static final PostgreSQLContainer<?> postgres =
