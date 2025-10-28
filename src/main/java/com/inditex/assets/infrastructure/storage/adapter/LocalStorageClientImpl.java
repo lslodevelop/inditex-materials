@@ -2,6 +2,7 @@ package com.inditex.assets.infrastructure.storage.adapter;
 
 import com.inditex.assets.domain.model.Asset;
 import com.inditex.assets.domain.port.out.StorageClientPort;
+import com.inditex.assets.infrastructure.storage.config.LocalStorageProperties;
 import com.inditex.assets.infrastructure.storage.model.StorageMetadata;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -21,12 +22,16 @@ import java.util.Base64;
 @Profile("local")
 public class LocalStorageClientImpl implements StorageClientPort {
 
-    private static final Path BASE_PATH = Path.of("/tmp/uploads");
+    private final Path basePath;
+
+    public LocalStorageClientImpl(final LocalStorageProperties props) {
+        this.basePath = Path.of(props.basePath());
+    }
 
     @Override
     public Mono<String> getFile(String filename) {
         return Mono.fromCallable(() -> {
-            Path filePath = BASE_PATH.resolve(filename);
+            Path filePath = basePath.resolve(filename);
             byte[] fileBytes = Files.readAllBytes(filePath);
             return Base64.getEncoder().encodeToString(fileBytes);
         }).subscribeOn(Schedulers.boundedElastic());
@@ -36,19 +41,19 @@ public class LocalStorageClientImpl implements StorageClientPort {
     public Mono<StorageMetadata> upload(Asset asset, String encodedFile) {
         return Mono.fromCallable(() -> {
                     try {
-                        if (!Files.exists(BASE_PATH)) {
-                            Files.createDirectories(BASE_PATH);
-                            log.info("Created upload directory at {}", BASE_PATH);
+                        if (!Files.exists(basePath)) {
+                            Files.createDirectories(basePath);
+                            log.info("Created upload directory at {}", basePath);
                         }
 
                         byte[] fileBytes = Base64.getDecoder().decode(encodedFile);
-                        Path filePath = BASE_PATH.resolve(asset.getFilename());
+                        Path filePath = basePath.resolve(asset.getFilename());
 
                         Files.write(filePath, fileBytes,
                                 StandardOpenOption.CREATE,
                                 StandardOpenOption.TRUNCATE_EXISTING);
 
-                        log.info("[LOCAL STORAGE] Saved file '{}' at {}", asset.getFilename(), BASE_PATH.toAbsolutePath());
+                        log.info("[LOCAL STORAGE] Saved file '{}' at {}", asset.getFilename(), basePath.toAbsolutePath());
 
                         return StorageMetadata.builder()
                                 .url(filePath.toString())

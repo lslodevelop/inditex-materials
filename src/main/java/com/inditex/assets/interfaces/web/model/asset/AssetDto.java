@@ -1,10 +1,12 @@
 package com.inditex.assets.interfaces.web.model.asset;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class AssetDto {
 
     private String id;

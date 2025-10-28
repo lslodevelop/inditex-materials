@@ -3,7 +3,6 @@ package com.inditex.assets.interfaces.web.handler;
 import com.inditex.assets.domain.exception.ApplicationErrorCodes;
 import com.inditex.assets.domain.exception.ControlledErrorException;
 import com.inditex.assets.domain.exception.GenericErrorCodes;
-import com.inditex.assets.interfaces.web.exception.HttpErrorStatusResolver;
 import com.inditex.assets.interfaces.web.model.ErrorResponseDto;
 import com.inditex.assets.interfaces.web.model.ValidationError;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +28,6 @@ import static java.lang.String.format;
 @Slf4j
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
-
-    //Check whether possible to manage in interface layer instead of domain layer
-    private final HttpErrorStatusResolver httpErrorStatusResolver;
 
     @ExceptionHandler(ControlledErrorException.class)
     public Mono<ResponseEntity<ErrorResponseDto>> handleControlledException(final ControlledErrorException ex) {
@@ -88,7 +84,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingRequestValueException.class)
-    public Mono<ErrorResponseDto> handleMalformedUrlException(final Exception ex) {
+    public Mono<ErrorResponseDto> handleMalformedUrlException(final MissingRequestValueException ex) {
         final String message = format
                 ("Malformed URL. %s:", ex.getMessage());
         log.warn("Invalid URL. Please check proper format {}", ex.getMessage());
@@ -98,7 +94,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public Mono<ErrorResponseDto> handleArgumentMismatchException(final Exception ex) {
+    public Mono<ErrorResponseDto> handleArgumentMismatchException(final MethodArgumentTypeMismatchException ex) {
         final String message = format
                 ("Malformed URL. %s:", ex.getMessage());
         log.error("Invalid parameter types for provided URL. Please check proper format {}", ex.getMessage());

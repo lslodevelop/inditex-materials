@@ -2,7 +2,7 @@ package com.inditex.assets.application.service;
 
 import com.inditex.assets.domain.model.Asset;
 import com.inditex.assets.domain.model.AssetStatus;
-import com.inditex.assets.domain.port.in.UploadAssetUseCase;
+import com.inditex.assets.domain.port.in.UploadAssetPort;
 import com.inditex.assets.domain.port.out.AssetRepositoryPort;
 import com.inditex.assets.domain.port.out.StorageClientPort;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AssetServiceImpl implements UploadAssetUseCase {
+public class AssetServiceImpl implements UploadAssetPort {
 
     private final AssetRepositoryPort assetRepositoryPort;
     private final StorageClientPort storageClientPort;

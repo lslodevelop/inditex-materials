@@ -20,6 +20,10 @@ spring:
   liquibase:
     change-log: classpath:database/changelog.xml
 
+storage:
+  local:
+    base-path: /tmp/uploads
+
 logging:
   level:
     root: INFO
