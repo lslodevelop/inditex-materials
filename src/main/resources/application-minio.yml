@@ -5,17 +5,26 @@ spring:
   config:
     activate:
       on-profile: minio
+
+  #For Liquibase
+  datasource:
+    url: jdbc:h2:mem:assetsdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    username: username
+    password: password
+    driver-class-name: org.h2.Driver
+
   r2dbc:
-    url: r2dbc:postgresql://localhost:5432/assetsdb
-    username: postgres
-    password: postgres
+    url: r2dbc:h2:mem:///assetsdb?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    username: username
+    password: password
+
   liquibase:
     change-log: classpath:database/changelog.xml
 
 storage:
   type: minio
   minio:
-    endpoint: http://localhost:9000
+    endpoint: http://minio:9000
     access-key: minioadmin
     secret-key: minioadmin
     bucket: assets
