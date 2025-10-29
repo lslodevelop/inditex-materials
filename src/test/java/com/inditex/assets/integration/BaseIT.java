@@ -1,7 +1,6 @@
 package com.inditex.assets.integration;
 
 import com.inditex.assets.domain.model.Asset;
-import com.inditex.assets.domain.port.out.AssetRepositoryPort;
 import com.inditex.assets.domain.port.out.StorageClientPort;
 import com.inditex.assets.infrastructure.database.mapper.AssetEntityMapper;
 import com.inditex.assets.infrastructure.storage.model.StorageMetadata;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -29,9 +27,6 @@ public abstract class BaseIT {
 
     @MockitoSpyBean
     protected StorageClientPort storageClientPort;
-
-    @MockitoBean
-    protected AssetRepositoryPort assetRepositoryPort;
 
     @MockitoSpyBean
     protected AssetEntityMapper assetEntityMapper;
