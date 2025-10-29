@@ -21,7 +21,7 @@ Teniendo en cuenta que el aplicativo pudiera escalar en complejidad en el futuro
 * __interfaces__
     * Implementación de puertos de entrada al aplicativo (en este caso una API REST), además de los adaptadores con los mappers entre dominio-DTO. El aplicativo expone dos endpoints:
       * Uno de subida de ficheros con sus metadatos.
-      * Otro de búsqueda de estos ficheros utilizando varios criterios (nombre, tipo). También permite ordenar por nombre, tipo, fecha de creación y fecha de actualización de forma ascendente o descendente.
+      * Otro de búsqueda de estos ficheros utilizando varios criterios (nombre, tipo). También permite ordenar por nombre, tipo, fecha de creación y fecha de actualización de forma ascendente o descendente (un único parámetro, podría implementarse una mejora con un objeto Sort compuesto).
 
 Aunque en arquitectura hexagonal las implementaciones de los puertos tambien pueden estar dentro de un único paquete de infraestructura, por cuestiones de claridad prefiero separar puertos de entrada y de salida en paquetes distintos, que es otro enfoque válido en estas soluciones.
 

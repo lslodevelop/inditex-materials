@@ -26,6 +26,7 @@
     <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
     <jacoco.branch.coverage.ratio>85%</jacoco.branch.coverage.ratio>
     <jacoco.line.coverage.ratio>85%</jacoco.line.coverage.ratio>
+    <openapi-webflux-version>2.8.13</openapi-webflux-version>
   </properties>
 
   <dependencies>
@@ -94,9 +95,9 @@
     </dependency>
 
     <dependency>
-      <groupId>io.swagger.core.v3</groupId>
-      <artifactId>swagger-annotations</artifactId>
-      <version>${swagger-annotations.version}</version>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+      <version>${openapi-webflux-version}</version>
     </dependency>
 
     <dependency>
