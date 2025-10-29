@@ -24,15 +24,11 @@ public class AssetServiceImpl implements UploadAssetPort {
 
     @Override
     public Mono<String> upload(final Asset asset, final String encodedFile) {
-        final Asset toSave = Asset.builder()
-                .id(UUID.randomUUID().toString())
-                .filename(asset.getFilename())
-                .contentType(asset.getContentType())
-                .createdAt(Instant.now())
-                .status(AssetStatus.PENDING)
-                .build();
+        asset.setId(UUID.randomUUID().toString());
+        asset.setCreatedAt(Instant.now());
+        asset.setStatus(AssetStatus.PENDING);
 
-        return assetRepositoryPort.save(toSave)
+        return assetRepositoryPort.save(asset)
                 .flatMap(saved ->
                         storageClientPort.upload(saved, encodedFile)
                                 .flatMap(metadata -> assetRepositoryPort.updateMetadataAndStatus(
@@ -64,5 +60,5 @@ public class AssetServiceImpl implements UploadAssetPort {
                             return Mono.just(asset);
                         })
                 );
-        }
+    }
 }
