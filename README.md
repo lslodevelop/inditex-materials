@@ -70,3 +70,12 @@ La consola del H2 para ambos perfiles se despliega en http://localhost:8082/ (us
 ![H2-console.png](assets/H2-console.png)
 
 ![H2-db.png](assets/H2-db.png)
+
+## OpenApi
+
+El proyecto tiene OpenAPI configurado. Se puede acceder desde el endpoint:
+
+```
+  http://localhost:8080/swagger-ui/index.html
+```
+![Swagger.png](assets/Swagger.png)
