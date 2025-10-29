@@ -2,11 +2,9 @@ package com.inditex.assets.config;
 
 import org.h2.tools.Server;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 
 @Configuration
-@Profile("local")
 public class H2ConsoleConfiguration {
 
     private Server webServer;
@@ -17,7 +15,7 @@ public class H2ConsoleConfiguration {
 
     @EventListener(org.springframework.context.event.ContextRefreshedEvent.class)
     public void start() throws java.sql.SQLException {
-        this.webServer = org.h2.tools.Server.createWebServer("-webPort", WEB_PORT, "-tcpAllowOthers").start();
+        this.webServer = Server.createWebServer("-webPort", WEB_PORT, "-webAllowOthers", "-tcpAllowOthers").start();
         this.tcpServer = org.h2.tools.Server.createTcpServer("-tcpPort", TCP_PORT, "-tcpAllowOthers").start();
     }
 
