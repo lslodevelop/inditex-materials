@@ -17,9 +17,11 @@ Teniendo en cuenta que el aplicativo pudiera escalar en complejidad en el futuro
       * Puertos de salida para llamar a los componentes externos que guardan los ficheros. Para reflejar el correcto funcionamiento de dos implementaciones distintas de forma sencilla, se ha realizado:
         * Un almacenamiento local en la máquina en la que se esté ejecutando el microservicio (para ejecutarlo en local de forma sencilla).
         * Un almacenamiento usando MinIO para simular llamadas a un aplicativo externo de terceros (para cuando se despliega el aplicativo usando docker compose).
-####        * NOTA: Estas implementaciones en un entorno real deberían estar cada una en su módulo de infraestructura correspondiente.
+####        * NOTA: Estas implementaciones de componentes externos en un entorno real deberían estar cada una en su módulo de infraestructura correspondiente.
 * __interfaces__
-    * Implementación de puertos de entrada al aplicativo (en este caso una API REST), además de los adaptadores con los mappers entre dominio-DTO.
+    * Implementación de puertos de entrada al aplicativo (en este caso una API REST), además de los adaptadores con los mappers entre dominio-DTO. El aplicativo expone dos endpoints:
+      * Uno de subida de ficheros con sus metadatos.
+      * Otro de búsqueda de estos ficheros utilizando varios criterios (nombre, tipo). También permite ordenar por nombre, tipo, fecha de creación y fecha de actualización de forma ascendente o descendente.
 
 Aunque en arquitectura hexagonal las implementaciones de los puertos tambien pueden estar dentro de un único paquete de infraestructura, por cuestiones de claridad prefiero separar puertos de entrada y de salida en paquetes distintos, que es otro enfoque válido en estas soluciones.
 
