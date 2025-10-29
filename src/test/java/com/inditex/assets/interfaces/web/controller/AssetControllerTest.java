@@ -1,6 +1,6 @@
 package com.inditex.assets.interfaces.web.controller;
 
-import com.inditex.assets.interfaces.web.adapter.AssetInputAdapter;
+import com.inditex.assets.interfaces.web.adapter.impl.AssetAdapterImpl;
 import com.inditex.assets.interfaces.web.model.asset.AssetDto;
 import com.inditex.assets.interfaces.web.model.asset.AssetUploadRequestDto;
 import com.inditex.assets.interfaces.web.model.asset.AssetUploadResponseDto;
@@ -25,7 +25,7 @@ class AssetControllerTest {
     private AssetController assetController;
 
     @Mock
-    private AssetInputAdapter assetInputAdapter;
+    private AssetAdapterImpl assetAdapterImpl;
 
     @Test
     void uploadTest() {
@@ -36,7 +36,7 @@ class AssetControllerTest {
                 .build();
 
         final Mono<AssetUploadResponseDto> assetUploadResponseDtoMono = Mono.just(assetUploadResponseDto);
-        when(assetInputAdapter.upload(assetUploadRequestDto)).thenReturn(assetUploadResponseDtoMono);
+        when(assetAdapterImpl.upload(assetUploadRequestDto)).thenReturn(assetUploadResponseDtoMono);
 
         //when
         final Mono<AssetUploadResponseDto> result = assetController.upload(assetUploadRequestDto);
@@ -46,8 +46,8 @@ class AssetControllerTest {
                 .assertNext(response -> assertThat(response).isNotNull())
                 .verifyComplete();
 
-        verify(assetInputAdapter).upload(assetUploadRequestDto);
-        verifyNoMoreInteractions(assetInputAdapter);
+        verify(assetAdapterImpl).upload(assetUploadRequestDto);
+        verifyNoMoreInteractions(assetAdapterImpl);
     }
 
     @Test
@@ -61,7 +61,7 @@ class AssetControllerTest {
         final AssetDto assetDto = AssetDto.builder().build();
         final Flux<AssetDto> assetDtoFlux = Flux.just(assetDto);
 
-        when(assetInputAdapter.search(filename, contentType, sortBy, sortDirection)).thenReturn(assetDtoFlux);
+        when(assetAdapterImpl.search(filename, contentType, sortBy, sortDirection)).thenReturn(assetDtoFlux);
 
         //when
         final Flux<AssetDto> result = assetController.search(filename, contentType, sortBy, sortDirection);
@@ -71,8 +71,8 @@ class AssetControllerTest {
                 .assertNext(response -> assertThat(response).isNotNull())
                 .verifyComplete();
 
-        verify(assetInputAdapter).search(filename, contentType, sortBy, sortDirection);
-        verifyNoMoreInteractions(assetInputAdapter);
+        verify(assetAdapterImpl).search(filename, contentType, sortBy, sortDirection);
+        verifyNoMoreInteractions(assetAdapterImpl);
     }
 
 }

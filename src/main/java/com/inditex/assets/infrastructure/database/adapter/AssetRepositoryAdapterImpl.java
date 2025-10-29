@@ -3,7 +3,7 @@ package com.inditex.assets.infrastructure.database.adapter;
 import com.inditex.assets.domain.model.Asset;
 import com.inditex.assets.domain.model.AssetStatus;
 import com.inditex.assets.domain.port.out.AssetRepositoryPort;
-import com.inditex.assets.infrastructure.database.mapper.AssetEntityMapper;
+import com.inditex.assets.infrastructure.database.adapter.mapper.AssetEntityMapper;
 import com.inditex.assets.infrastructure.database.entity.AssetEntity;
 import com.inditex.assets.infrastructure.database.repository.AssetR2dbcRepository;
 import com.inditex.assets.infrastructure.database.repository.custom.AssetCustomRepository;
@@ -16,7 +16,7 @@ import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
-public class AssetRepositoryAdapter implements AssetRepositoryPort {
+public class AssetRepositoryAdapterImpl implements AssetRepositoryPort {
 
     private final AssetR2dbcRepository assetR2dbcRepository;
     private final AssetCustomRepository assetCustomRepository;

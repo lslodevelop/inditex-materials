@@ -2,7 +2,8 @@ package com.inditex.assets.interfaces.web.adapter;
 
 import com.inditex.assets.domain.model.Asset;
 import com.inditex.assets.domain.port.in.UploadAssetPort;
-import com.inditex.assets.interfaces.web.mapper.ApiAssetMapper;
+import com.inditex.assets.interfaces.web.adapter.impl.AssetAdapterImpl;
+import com.inditex.assets.interfaces.web.adapter.mapper.AssetInterfaceMapper;
 import com.inditex.assets.interfaces.web.model.asset.AssetDto;
 import com.inditex.assets.interfaces.web.model.asset.AssetUploadRequestDto;
 import com.inditex.assets.interfaces.web.model.asset.AssetUploadResponseDto;
@@ -25,16 +26,16 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class AssetInputAdapterTest {
+class AssetAdapterImplTest {
 
     @InjectMocks
-    private AssetInputAdapter assetInputAdapter;
+    private AssetAdapterImpl assetAdapterImpl;
 
     @Mock
     private UploadAssetPort uploadAssetPort;
 
     @Mock
-    private ApiAssetMapper apiAssetMapper;
+    private AssetInterfaceMapper assetInterfaceMapper;
 
     @Test
     void uploadTest() {
@@ -47,11 +48,11 @@ class AssetInputAdapterTest {
         final String expectedId = UUID.randomUUID().toString();
         final Mono<String> fileIdMono = Mono.just(expectedId);
 
-        when(apiAssetMapper.toDomain(assetUploadRequestDto)).thenReturn(asset);
+        when(assetInterfaceMapper.toDomain(assetUploadRequestDto)).thenReturn(asset);
         when(uploadAssetPort.upload(asset, assetUploadRequestDto.getEncodedFile())).thenReturn(fileIdMono);
 
         //when
-        final Mono<AssetUploadResponseDto> result = assetInputAdapter.upload(assetUploadRequestDto);
+        final Mono<AssetUploadResponseDto> result = assetAdapterImpl.upload(assetUploadRequestDto);
 
         //then
         StepVerifier.create(result)
@@ -62,8 +63,8 @@ class AssetInputAdapterTest {
                 .verifyComplete();
 
         verify(uploadAssetPort).upload(asset, assetUploadRequestDto.getEncodedFile());
-        verify(apiAssetMapper).toDomain(assetUploadRequestDto);
-        verifyNoMoreInteractions(apiAssetMapper, uploadAssetPort);
+        verify(assetInterfaceMapper).toDomain(assetUploadRequestDto);
+        verifyNoMoreInteractions(assetInterfaceMapper, uploadAssetPort);
     }
 
     @Test
@@ -78,10 +79,10 @@ class AssetInputAdapterTest {
         final Flux<Asset> assetFlux = Flux.just(asset);
 
         when(uploadAssetPort.search(filename, contentType, sortBy, sortDirection)).thenReturn(assetFlux);
-        when(apiAssetMapper.toDto(asset)).thenReturn(assetDto);
+        when(assetInterfaceMapper.toDto(asset)).thenReturn(assetDto);
 
         //when
-        final Flux<AssetDto> result = assetInputAdapter.search(filename, contentType, sortBy, sortDirection);
+        final Flux<AssetDto> result = assetAdapterImpl.search(filename, contentType, sortBy, sortDirection);
 
         //then
         final List<AssetDto> assetDtoList = new ArrayList<>();
@@ -94,8 +95,8 @@ class AssetInputAdapterTest {
 
         assertThat(assetDtoList).hasSize(1);
         verify(uploadAssetPort).search(filename, contentType, sortBy, sortDirection);
-        verify(apiAssetMapper).toDto(asset);
-        verifyNoMoreInteractions(apiAssetMapper, uploadAssetPort);
+        verify(assetInterfaceMapper).toDto(asset);
+        verifyNoMoreInteractions(assetInterfaceMapper, uploadAssetPort);
     }
 
 }

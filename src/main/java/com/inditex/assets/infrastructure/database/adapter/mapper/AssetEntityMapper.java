@@ -1,4 +1,4 @@
-package com.inditex.assets.infrastructure.database.mapper;
+package com.inditex.assets.infrastructure.database.adapter.mapper;
 
 import com.inditex.assets.domain.model.Asset;
 import com.inditex.assets.infrastructure.database.entity.AssetEntity;

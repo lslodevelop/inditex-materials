@@ -2,8 +2,8 @@ package com.inditex.assets.infrastructure.database.adapter;
 
 import com.inditex.assets.domain.model.Asset;
 import com.inditex.assets.domain.model.AssetStatus;
+import com.inditex.assets.infrastructure.database.adapter.mapper.AssetEntityMapper;
 import com.inditex.assets.infrastructure.database.entity.AssetEntity;
-import com.inditex.assets.infrastructure.database.mapper.AssetEntityMapper;
 import com.inditex.assets.infrastructure.database.repository.AssetR2dbcRepository;
 import com.inditex.assets.infrastructure.database.repository.custom.AssetCustomRepository;
 import org.junit.jupiter.api.Test;
@@ -26,10 +26,10 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class AssetRepositoryAdapterTest {
+class AssetRepositoryAdapterImplTest {
 
     @InjectMocks
-    private AssetRepositoryAdapter assetRepositoryAdapter;
+    private AssetRepositoryAdapterImpl assetRepositoryAdapterImpl;
 
     @Mock
     private AssetR2dbcRepository assetR2dbcRepository;
@@ -53,7 +53,7 @@ class AssetRepositoryAdapterTest {
         when(assetR2dbcRepository.save(assetEntity)).thenReturn(Mono.just(assetEntity));
 
         //when
-        final Mono<Asset> result = assetRepositoryAdapter.save(asset);
+        final Mono<Asset> result = assetRepositoryAdapterImpl.save(asset);
 
         //then
         StepVerifier.create(result)
@@ -83,7 +83,7 @@ class AssetRepositoryAdapterTest {
         when(assetEntityMapper.toDomain(assetEntity)).thenReturn(asset);
 
         //when
-        final Flux<Asset> result = assetRepositoryAdapter.findByFilter(filename, contentType, sortBy, sortDirection);
+        final Flux<Asset> result = assetRepositoryAdapterImpl.findByFilter(filename, contentType, sortBy, sortDirection);
 
         //then
         final List<Asset> assetList = new ArrayList<>();
@@ -114,7 +114,7 @@ class AssetRepositoryAdapterTest {
         when(assetR2dbcRepository.save(captor.capture())).thenReturn(Mono.just(new AssetEntity()));
 
         // when
-        Mono<Void> result = assetRepositoryAdapter.updateMetadataAndStatus(id, url, size, uploadedAt, null);
+        Mono<Void> result = assetRepositoryAdapterImpl.updateMetadataAndStatus(id, url, size, uploadedAt, null);
 
         // then
         StepVerifier.create(result)
@@ -146,7 +146,7 @@ class AssetRepositoryAdapterTest {
         when(assetR2dbcRepository.save(captor.capture())).thenReturn(Mono.just(new AssetEntity()));
 
         // when
-        Mono<Void> result = assetRepositoryAdapter.updateMetadataAndStatus(id, url, size, uploadedAt, errorMessage);
+        Mono<Void> result = assetRepositoryAdapterImpl.updateMetadataAndStatus(id, url, size, uploadedAt, errorMessage);
 
         // then
         StepVerifier.create(result)

@@ -1,4 +1,4 @@
-package com.inditex.assets.interfaces.web.mapper;
+package com.inditex.assets.interfaces.web.adapter.mapper;
 
 import com.inditex.assets.domain.model.Asset;
 import com.inditex.assets.interfaces.web.model.asset.AssetDto;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 @Mapper(componentModel = "spring")
-public interface ApiAssetMapper {
+public interface AssetInterfaceMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)

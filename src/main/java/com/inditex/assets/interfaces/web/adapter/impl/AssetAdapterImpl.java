@@ -1,8 +1,9 @@
-package com.inditex.assets.interfaces.web.adapter;
+package com.inditex.assets.interfaces.web.adapter.impl;
 
 import com.inditex.assets.domain.model.Asset;
 import com.inditex.assets.domain.port.in.UploadAssetPort;
-import com.inditex.assets.interfaces.web.mapper.ApiAssetMapper;
+import com.inditex.assets.interfaces.web.adapter.AssetAdapter;
+import com.inditex.assets.interfaces.web.adapter.mapper.AssetInterfaceMapper;
 import com.inditex.assets.interfaces.web.model.asset.AssetDto;
 import com.inditex.assets.interfaces.web.model.asset.AssetUploadRequestDto;
 import com.inditex.assets.interfaces.web.model.asset.AssetUploadResponseDto;
@@ -13,19 +14,19 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class AssetInputAdapter {
+public class AssetAdapterImpl implements AssetAdapter {
 
     private final UploadAssetPort uploadAssetPort;
-    private final ApiAssetMapper apiAssetMapper;
+    private final AssetInterfaceMapper assetInterfaceMapper;
 
     public Mono<AssetUploadResponseDto> upload(final AssetUploadRequestDto assetUploadRequestDto) {
-        final Asset domain = apiAssetMapper.toDomain(assetUploadRequestDto);
+        final Asset domain = assetInterfaceMapper.toDomain(assetUploadRequestDto);
         return uploadAssetPort.upload(domain, assetUploadRequestDto.getEncodedFile())
                 .map(id -> AssetUploadResponseDto.builder().id(id).build());
     }
 
     public Flux<AssetDto> search(final String filename, final String contentType, final String sortBy, final String sortDirection) {
         return uploadAssetPort.search(filename, contentType, sortBy, sortDirection)
-                .map(apiAssetMapper::toDto);
+                .map(assetInterfaceMapper::toDto);
     }
 }

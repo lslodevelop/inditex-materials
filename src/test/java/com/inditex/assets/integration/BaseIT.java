@@ -2,7 +2,7 @@ package com.inditex.assets.integration;
 
 import com.inditex.assets.domain.model.Asset;
 import com.inditex.assets.domain.port.out.StorageClientPort;
-import com.inditex.assets.infrastructure.database.mapper.AssetEntityMapper;
+import com.inditex.assets.infrastructure.database.adapter.mapper.AssetEntityMapper;
 import com.inditex.assets.infrastructure.storage.model.StorageMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
