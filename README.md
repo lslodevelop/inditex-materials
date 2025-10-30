@@ -39,7 +39,7 @@ El proyecto tiene tests unitarios y de integración. Con el plugin de Jacoco se 
 |-------------------------------------|---------|
 | Java SDK                            | 17+     |
 | Spring Boot                         | 3.5.7   |
-| Maven                               | 3.10.x+ |
+| Maven                               | 3.9.x+ |
 
 ## Instalación y ejecución
 
